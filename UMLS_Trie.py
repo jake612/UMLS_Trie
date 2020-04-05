@@ -13,41 +13,41 @@ class trie:
             raise ValueError
         return self.root_node.insertValues(values, umls_code)
 
-    def replace_string(self, string, delimiter):
-        if not isinstance(string, str):
-            raise TypeError
+    def get_codes(self, string, delimiter):
+        return_codes = []
+
         vals = string.split(delimiter)
-        vals = list(filter(lambda a: a != delimiter, vals))
-        i = 0
-        while i < len(vals):
-            replace_code = None
-            offset = 0
+        vals = list(filter(lambda a: a != delimiter, vals)) # filters out additional whitespaces
+
+        for i in range(len(vals)):
+            final_code = None
+            end_index = 0
+            string_vals = []
+            past_nils = 0
+
+            offset = i
             node = self.root_node
-            while True:
-                if i+offset >= len(vals):
-                    break
-                if node is None:
-                    break
-                umls_code = node.getUMLSCode(vals[i+offset])
+            while offset < len(vals) and node is not None:
+                string_vals.append(vals[offset])
+                umls_code = node.getUMLSCode(vals[offset])
                 if umls_code is None:
                     break
                 else:
                     if umls_code != "\0":
-                        replace_code = umls_code
-                    node = node.getNode(vals[i+offset])
-
+                        final_code = umls_code
+                        end_index = offset
+                        past_nils = 0
+                    else:
+                        past_nils += 1
+                    node = node.getNode(vals[offset])
                 offset += 1
-            if replace_code is not None:
-                vals[i] = replace_code
-                offset -= 1
-                while offset > 0:
-                    vals.pop(i+offset)
-                    offset-=1
-            i += 1
-        final_string = ""
-        for word in vals:
-            final_string += word + " "
-        return final_string[:-1]
+
+            if final_code is not None and (len(return_codes) == 0 or end_index > return_codes[-1][1]):
+                return_codes.append((i, end_index, final_code, " ".join(string_vals[:-past_nils or None])))
+
+        return return_codes
+
+
 
     def print_vals(self):
         self.root_node.print_vals()
