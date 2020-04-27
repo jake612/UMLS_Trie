@@ -53,6 +53,16 @@ class TestTrieCodes(unittest.TestCase):
         self.assertEqual(codes[0], (0, 1, "S2", "I love"), "first match incorrect")
         self.assertEqual(codes[1], (1, 2, "S4", "love you"), "second match incorrect")
 
+    def test_single_word_code(self):
+        codes = [(0, 0, "S1", "I")]
+        returned = self.test_trie.get_codes("I am", " ")
+        self.assertEqual(codes, returned)
+
+    def test_another_code(self):
+        codes = [(0, 1, "S2", "I love")]
+        returned = self.test_trie.get_codes("I love them all", " ")
+        self.assertEqual(codes, returned)
+
 
 
 class TestReplace(unittest.TestCase):
@@ -88,6 +98,7 @@ class TestReplace(unittest.TestCase):
         codes = [(0, 1, "S2", "I love"), (2, 4, "S6", "another replace")]
         returned = tsr.replace_string("I love you", codes)
         self.assertEqual("S2 S6", returned)
+
 
 class TestTrieNode(unittest.TestCase):
 

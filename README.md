@@ -52,4 +52,19 @@ return value: string with its substrings replaced by their umls codes.
 
 Found in example_trie_replace.py
 
+# Explore Trie
+The explore trie script allows a user to test out a pickled UMLS_Trie in the command line.
+It's a good way to test replace_string and get_codes.
+
+- Using the explore_trie.py script
+    - The first command line argument is always the file name of the pickled trie.
+    - No further arguments:
+       loads a cli interactive script where a users 
+    can continuously enter sentences. The script will print out the sentence with its
+    maximal patterns replaced by their code from the loaded pickled UMLS_Trie. Type "exit" to exit the program loop.
+        - ex: python explore_trie.py pickle_trie.p
+    - The "-s" argument: If there is an "-s" switch after the pickle file argument and a sentence argument after that,
+    the script will run get_codes and replace_string on the supplied sentence much like in the case of no argument.
+        - python explore_trie.py pickle_trie.p -s "Test replacing me"
+
 

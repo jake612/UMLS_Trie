@@ -28,7 +28,6 @@ class trie:
             offset = i
             node = self.root_node
             while offset < len(vals) and node is not None:
-                string_vals.append(vals[offset])
                 umls_code = node.getUMLSCode(vals[offset])
                 if umls_code is None:
                     break
@@ -40,14 +39,13 @@ class trie:
                     else:
                         past_nils += 1
                     node = node.getNode(vals[offset])
+                string_vals.append(vals[offset])
                 offset += 1
 
             if final_code is not None and (len(return_codes) == 0 or end_index > return_codes[-1][1]):
                 return_codes.append((i, end_index, final_code, " ".join(string_vals[:-past_nils or None])))
 
         return return_codes
-
-
 
     def print_vals(self):
         self.root_node.print_vals()

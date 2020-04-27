@@ -1,6 +1,7 @@
 from UMLS_Trie import trie
 from replace_string import replace_string
 
+
 if __name__ == '__main__':
     # Insert the keys
     test_trie = trie()
